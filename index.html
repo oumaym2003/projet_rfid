@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>STT Magasin - Upload Audio</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { padding: 10px 15px; margin: 5px; }
+    #status { margin-top: 10px; }
+    #serverResp { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Démo : Upload audio pour STT Whisper</h2>
+
+  <button id="startBtn">🎤 Démarrer l'enregistrement</button>
+  <button id="stopBtn" disabled>⏹️ Arrêter</button>
+
+  <div id="status">Statut : prêt</div>
+  <div id="serverResp"></div>
+
+<script>
+let mediaRecorder;
+let audioChunks = [];
+
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const status = document.getElementById('status');
+const serverResp = document.getElementById('serverResp');
+
+startBtn.onclick = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  mediaRecorder = new MediaRecorder(stream);
+  audioChunks = [];
+
+  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+  mediaRecorder.onstart = () => {
+    status.innerText = "Enregistrement en cours...";
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+  };
+
+  mediaRecorder.start();
+};
+
+stopBtn.onclick = () => {
+  mediaRecorder.onstop = async () => {
+    status.innerText = "Envoi audio au serveur...";
+    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+    const formData = new FormData();
+    formData.append("audio", blob, "audio.webm");
+
+    try {
+      const resp = await fetch("/upload_audio", { method: "POST", body: formData });
+      const data = await resp.json();
+      serverResp.innerText = JSON.stringify(data, null, 2);
+      status.innerText = "Réponse reçue !";
+
+      // Lecture vocale de la réponse pour guidage
+      try {
+        let utterText = '';
+        if (data.found) {
+          utterText = `Article trouvé. Armoire ${data.armoire}, niveau ${data.niveau}. Trajectoire : ${data.trajectoire ? data.trajectoire.join(', ') : ''}`;
+        } else if (data.transcription) {
+          utterText = `Aucun article trouvé pour : ${data.transcription}`;
+        } else if (data.error) {
+          utterText = `Erreur serveur : ${data.error}`;
+        }
+        if (utterText && 'speechSynthesis' in window) {
+          const u = new SpeechSynthesisUtterance(utterText);
+          u.lang = 'fr-FR';
+          speechSynthesis.speak(u);
+        }
+      } catch (ttsErr) {
+        console.warn('TTS failed', ttsErr);
+      }
+    } catch (err) {
+      serverResp.innerText = "Erreur : " + err.message;
+      status.innerText = "Erreur lors de l'envoi";
+    }
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+  };
+
+  mediaRecorder.stop();
+  status.innerText = "Arrêt de l'enregistrement...";
+};
+</script>
+
+</body>
+</html>
+
