@@ -1,0 +1,6 @@
+flask
+flask-cors
+openai-whisper
+torch
+numpy
+# Note: Whisper uses ffmpeg externally; install ffmpeg separately on your system.

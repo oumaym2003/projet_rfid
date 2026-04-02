@@ -1,0 +1,92 @@
+:root{
+  --bg: #0b1220;
+  --panel: #0f2536;
+  --muted: #98a6b8;
+  --accent: #00c2a8;
+  --accent-2: #6c63ff;
+  --glass: rgba(255,255,255,0.04);
+  --white: #eef2f7;
+  --card: rgba(255,255,255,0.02);
+}
+
+*{box-sizing:border-box}
+html,body,#root{height:100%;}
+body{
+  margin:0;
+  font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(108,99,255,0.12), transparent 8%),
+              radial-gradient(800px 500px at 90% 80%, rgba(0,194,168,0.06), transparent 8%),
+              linear-gradient(180deg,#071428 0%, #071226 100%);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* App layout */
+.app-scene{display:flex; flex-direction:column; min-height:100vh}
+/* Hero */
+.hero{position:relative; display:flex; align-items:center; justify-content:space-between; padding:48px 56px; gap:24px; overflow:hidden}
+.hero-left{flex:1; max-width:680px}
+.hero-title{font-size:44px; margin:0 0 8px; letter-spacing:-1px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; color:transparent}
+.hero-sub{color:var(--muted); margin:0 0 18px}
+.hero-actions{display:flex; gap:12px}
+.hero-right{width:360px; display:flex; align-items:center; justify-content:center}
+.robot-wrap{width:320px; height:320px; border-radius:40px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; box-shadow:0 20px 60px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)}
+.robot-wrap img{width:85%; height:auto; display:block}
+.hero-decor{position:absolute; border-radius:50%; filter:blur(36px); opacity:0.6}
+.hero-decor-1{width:360px; height:360px; right:-80px; top:-60px; background:linear-gradient(90deg, rgba(108,99,255,0.16), rgba(0,194,168,0.06))}
+.hero-decor-2{width:260px; height:260px; left:-120px; bottom:-80px; background:linear-gradient(90deg, rgba(0,194,168,0.12), rgba(108,99,255,0.04))}
+
+.workspace.layout{display:grid; grid-template-columns:minmax(380px, 700px) minmax(360px, 1fr); gap:20px; align-items:start; justify-content:center; padding:40px 20px 80px; max-width:1380px; margin:0 auto;}
+.map-panel{border-radius:20px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); box-shadow:0 30px 80px rgba(2,6,23,0.7); border:1px solid rgba(255,255,255,0.04); overflow:hidden}
+.chat-panel{border-radius:20px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); box-shadow:0 30px 80px rgba(2,6,23,0.7); border:1px solid rgba(255,255,255,0.04); overflow:hidden; height:80vh; display:flex; flex-direction:column;}
+.panel{background:var(--panel); border-radius:12px; padding:14px; box-shadow:0 10px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)}
+
+/* Left main area (map + status) */
+.status-row{display:flex; gap:12px}
+.status-card{flex:1; padding:12px; border-radius:8px; background:var(--glass); border:1px solid rgba(255,255,255,0.04)}
+
+/* Right side: chat */
+.chat-panel > .panel-head{flex:0 0 auto}
+.chat-panel > .panel-body{flex:1 1 auto; min-height:0; display:flex; padding:0 18px 18px}
+.chat-root{display:flex; flex-direction:column; flex:1 1 auto; min-height:0; border-radius:10px; overflow:hidden}
+.chat-status-bar{display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; padding:10px 12px 8px; border-bottom:1px solid rgba(255,255,255,0.06); background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));}
+.chat-status-pill{display:flex; flex-direction:column; gap:2px; padding:8px 10px; border-radius:10px; background:rgba(8,20,36,0.7); border:1px solid rgba(255,255,255,0.08); min-height:52px;}
+.chat-status-pill-wide{grid-column:auto;}
+.chat-status-key{font-size:11px; color:#9fb3c9; text-transform:uppercase; letter-spacing:.06em;}
+.chat-status-value{font-size:13px; color:#e8f4ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.chat-status-info{border-color:rgba(72, 149, 239, 0.55); background:rgba(44, 100, 164, 0.26);}
+.chat-status-success{border-color:rgba(52, 211, 153, 0.6); background:rgba(24, 102, 84, 0.3);}
+.chat-status-warn{border-color:rgba(251, 191, 36, 0.6); background:rgba(123, 79, 16, 0.35);}
+.chat-status-error{border-color:rgba(248, 113, 113, 0.62); background:rgba(122, 37, 37, 0.34);}
+.panel-head{display:flex; justify-content:space-between; align-items:center; padding:18px 18px 0}
+.panel-body{padding:0 18px 18px}
+.chat-window{flex:1 1 auto; min-height:0; overflow:auto; padding:18px; display:flex; flex-direction:column; gap:12px; background:linear-gradient(180deg, rgba(0,0,0,0.03), transparent)}
+.jump-to-bottom-btn{position:absolute; right:22px; bottom:142px; z-index:6; border:1px solid rgba(255,255,255,0.2); background:rgba(9,20,34,0.9); color:#eaf4ff; border-radius:999px; padding:8px 12px; font-size:12px; font-weight:600; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.35)}
+.jump-to-bottom-btn:hover{background:rgba(18,38,64,0.95)}
+.msg{display:flex; gap:12px; align-items:flex-end}
+.msg.user{justify-content:flex-end}
+.avatar{width:56px; height:56px; border-radius:14px; background:linear-gradient(135deg,var(--accent-2),var(--accent)); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.45)}
+.avatar img{width:100%; height:100%; object-fit:cover; border-radius:12px}
+.bubble{max-width:70%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.03)}
+.assistant-bubble{background:linear-gradient(135deg,var(--accent-2),var(--accent)); color:#012a26}
+
+.controls{display:flex; gap:8px; padding:12px; align-items:center; border-top:1px solid rgba(255,255,255,0.02); background:linear-gradient(180deg,transparent, rgba(0,0,0,0.02))}
+.btn{padding:10px 14px; border-radius:12px; border:0; background:transparent; color:var(--white); cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--accent-2),var(--accent)); color:#012a26; font-weight:700}
+.select{padding:8px 10px; border-radius:10px; background:#ffffff; border:1px solid rgba(16,22,30,0.08); color:#07101a}
+/* make option text readable in select on all platforms */
+.select option{color:#07101a}
+
+@media (max-width:1000px){
+  .workspace.layout{grid-template-columns: 1fr;}
+  .chat-column, .main-left{order:unset}
+  .map-wrap{height:360px}
+  .chat-root{height:360px}
+  .chat-status-bar{grid-template-columns:1fr;}
+}
+
+/* Small utilities */
+.muted{color:var(--muted); font-size:13px}
+.small{font-size:13px}
+
